@@ -26,7 +26,7 @@ Each sample of the training data contains the following items:
 * Image from right camera (320 pixels x 160 pixels x RGB)
 * Steering angle (in degrees)
 
-Images from left and right cameras were used for training (and training only) as if they were from the center camera with an appropriate correction applied to the corresponding steering angle. The benefit of using them is two fold:
+Images from left and right cameras were used for training (and training only) as if they were from the center camera with an appropriate correction (0.35 degree) applied to the corresponding steering angle. The benefit of using them is two fold:
 
 1. Increases the number of training samples.
 1. Teaches the AI how to steer back to the center of the road.
@@ -45,7 +45,7 @@ Below are sample input images:
 
 | Left Camera   | Center Camera | Right Camera |
 |---------|-------|-------|
-| <img src="examples/left_2017_05_02_22_13_43_928.jpg", width=200> |<img src="examples/center_2017_05_02_22_13_43_928.jpg", width=200>|<img src="exmaples/right_2017_05_02_22_13_43_928.jpg", width=200> |
+| <img src="examples/left_2017_05_02_22_13_43_928.jpg" width=200> |<img src="examples/center_2017_05_02_22_13_43_928.jpg" width=200>|<img src="examples/right_2017_05_02_22_13_43_928.jpg" width=200> |
 
 #### Sample Data Characteristics:
  * Number of samples: 55824 (80%/20% split for training/validation)
