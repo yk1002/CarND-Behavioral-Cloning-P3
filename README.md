@@ -75,6 +75,7 @@ I took the CNN described in [Nvidia's website](https://devblogs.nvidia.com/paral
 | Convolutional         | Depth=64, kernel=3x3, activation=RELU                | 23x17x64
 | Convolutional         | Depth=64, kernel=3x3, activation=RELU                | 21x15x64
 | Flatten               |                                                      | 20160
+| Dropout               | Probability=50%                                      | 20160
 | Fully connected       |                                                      | 100
 | Fully connected       |                                                      | 43
 | Fully connected       |                                                      | 10
@@ -86,11 +87,30 @@ Since the CNN is powerful enough to control a real car in the real world, it cer
 
 Train the model
 -----
+I applied the following preprocessing to the original data to prepare training and validation data for Keras' optimization function *fit_generator*.
+
+1. Used 80% of the total for training only and 20% for validation only. No cross-validation was performed.
+1. From the training set randomly removed 90% of all frames whose steering angle is strictly 0 to reduce AI's tendency to go straight. 
+1. From each frame in the training set:
+   1. Picked the image from the center camera and steering angle and add the pair to the final training set.
+   1. Picked the image from the left camera and (steering angle + 0.35)  and add the pair to the final training set.
+   1. Picked the image from the right camera and (steering angle - 0.35) and add the pair to the final training set.
+
+I did not apply any other preprocessing to the training data. However, I added a cropping layer to the model itself.
+
+There were 34752 samples in the final training set and 11166 samples in the validation set.
+
 For training I used an Adam optimizer and thus did not need to adjust learning rates manually.
 
-It took approximately 250 seconds per epoch to train the model with the K520 GPU. The model was trained over 5 epochs.
+It took approximately 240 seconds per epoch to train the model with the K520 GPU. The model was trained over 5 epochs. Here is how training and validation accuracies improved over epochs.
 
-Both training and validation accuracies progressively improved over epochs. The model may improve if trained for more epochs.
+| Epoch | Training Loss | Validation Loss |
+|------:|------:|------:|
+| 1     | 0.0288| 0.0098 |
+| 2     | 0.0088| 0.0069|
+| 3     | 0.0080| 0.0099|
+| 4     | 0.0076| 0.0079|
+| 5     | 0.0072|: 0.0077|
 
 Test and improve the model
 -----
@@ -102,4 +122,4 @@ The trained model was tested in the automatic mode of the car simulator. The aut
 
 The first few models I created always went off the course at the sharp left curve after the bridge. Thinking it was caused by the lack of training data, I collected more data around that section of the course. I was hoping it would teach the AI how to make that section, but unfortunately it only slightly improved the outcome.  While the car looked more eager to steer left, it still failed to get past the section. 
 
-I went back to the training data to examine it, and immediately realized many samples (25% of all samples) had strictly 0 steering angle. Thinking that was why the car had such a strong tendency to go straight, I removed 90% of them from the training data. The result was dramatic. Not only could the AI driven car successfully get past the curve, it could complete a full lap over and over again!
+I went back to the training data to examine it, and immediately realized many samples (23.4% of all samples) had strictly 0 steering angle. Thinking that was why the car had such a strong tendency to go straight, I removed 90% of them from the training data. The result was dramatic. Not only could the AI driven car successfully get past the curve, it could complete a full lap over and over again!
