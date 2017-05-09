@@ -106,11 +106,11 @@ It took approximately 240 seconds per epoch to train the model with the K520 GPU
 
 | Epoch | Training Loss | Validation Loss |
 |------:|------:|------:|
-| 1     | 0.0288| 0.0098 |
+| 1     | 0.0288| 0.0098|
 | 2     | 0.0088| 0.0069|
 | 3     | 0.0080| 0.0099|
 | 4     | 0.0076| 0.0079|
-| 5     | 0.0072|: 0.0077|
+| 5     | 0.0072| 0.0077|
 
 Test and improve the model
 -----
